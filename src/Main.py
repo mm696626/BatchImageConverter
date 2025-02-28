@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import PhotoImage
 
 import batchConvert
 
@@ -18,6 +19,8 @@ def convert_images():
 
 root = tk.Tk()
 root.title("Wii Photo Channel Image Converter")
+icon = PhotoImage(file='images/photo-channel-icon.png')
+root.iconphoto(True, icon)
 
 image_folder_label = tk.Label(root, text="Image Folder:")
 image_folder_label.grid(row=0, column=0, padx=10, pady=10)
