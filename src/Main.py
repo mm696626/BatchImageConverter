@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import filedialog
 
+import batchConvert
+
+
 def browse_folder(entry_widget):
     folder_selected = filedialog.askdirectory()
     if folder_selected:
@@ -10,6 +13,7 @@ def browse_folder(entry_widget):
 def perform_action():
     image_folder = image_folder_path.get()
     output_folder = output_folder_path.get()
+    batchConvert.batch_convert(image_folder, output_folder)
 
 # Set up the main window
 root = tk.Tk()
