@@ -49,11 +49,11 @@ output_folder_path.grid(row=1, column=1, padx=10, pady=10)
 output_folder_browse = tk.Button(root, text="Browse", command=lambda: browse_folder(output_folder_path))
 output_folder_browse.grid(row=1, column=2, padx=10, pady=10)
 
-convert_button = tk.Button(root, text="Convert", command=convert_images)
-convert_button.grid(row=2, column=0, columnspan=3, pady=20)
-
 delete_checkbox_var = tk.BooleanVar()
 delete_checkbox = tk.Checkbutton(root, text="Delete Original Files After Conversion", variable=delete_checkbox_var)
-delete_checkbox.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
+delete_checkbox.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+
+convert_button = tk.Button(root, text="Convert", command=convert_images)
+convert_button.grid(row=3, column=0, columnspan=3, pady=20)
 
 root.mainloop()
