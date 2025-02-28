@@ -3,7 +3,6 @@ from tkinter import filedialog
 
 import batchConvert
 
-
 def browse_folder(entry_widget):
     folder_selected = filedialog.askdirectory()
     if folder_selected:
@@ -15,7 +14,6 @@ def perform_action():
     output_folder = output_folder_path.get()
     batchConvert.batch_convert(image_folder, output_folder)
 
-# Set up the main window
 root = tk.Tk()
 root.title("Wii Photo Channel Image Converter")
 
