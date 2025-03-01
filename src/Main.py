@@ -16,27 +16,21 @@ def browse_folder(entry_widget):
 def save_default_output_path():
     folder_selected = filedialog.askdirectory(title="Select Default Output Path")
     if folder_selected:
-        try:
-            with open("default_output_path.txt", "w") as file:
-                file.write(folder_selected)
+        with open("default_output_path.txt", "w") as file:
+            file.write(folder_selected)
             output_folder_path.delete(0, tk.END)
             output_folder_path.insert(0, folder_selected)
             messagebox.showinfo("Saved", "Default output path has been saved.")
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to save the default output path")
     else:
         messagebox.showwarning("Invalid Input", "Please select an output folder first.")
 
 
 def load_default_output_path():
     if os.path.exists("default_output_path.txt"):
-        try:
-            with open("default_output_path.txt", "r") as file:
-                saved_path = file.read().strip()
-                output_folder_path.delete(0, tk.END)
-                output_folder_path.insert(0, saved_path)
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to load the default output path: {str(e)}")
+        with open("default_output_path.txt", "r") as file:
+            saved_path = file.read().strip()
+            output_folder_path.delete(0, tk.END)
+            output_folder_path.insert(0, saved_path)
 
 def remove_default_output_path():
     if os.path.exists("default_output_path.txt"):
