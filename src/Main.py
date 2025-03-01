@@ -53,7 +53,7 @@ def convert_images():
 
     batchConvert.batch_convert(image_folder, output_folder, output_format, wii_photo_channel_size_limit)
 
-    image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".heic", ".heif"}
+    image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".heic", ".heif", ".gif"}
 
     if delete_original:
         for filename in os.listdir(image_folder):
@@ -62,7 +62,7 @@ def convert_images():
             if os.path.isfile(file_path) and file_extension in image_extensions:
                 os.remove(file_path)
 
-    messagebox.showinfo("Done", "Conversion is Completed!")
+    messagebox.showinfo("Done", "Conversion Complete!")
 
     image_folder_path.delete(0, tk.END)
 
