@@ -6,12 +6,12 @@ import os
 def convert_to_baseline_jpeg(input_image_path, output_image_path):
     with Image.open(input_image_path) as img:
         baseline_jpeg = img.convert("RGB")
-        baseline_jpeg.save(output_image_path, "JPEG", quality=100, optimize=True, baseline=True)
+        baseline_jpeg.save(output_image_path, "JPEG", optimize=True, baseline=True)
 
 def convert_to_progressive_jpeg(input_image_path, output_image_path):
     with Image.open(input_image_path) as img:
         progressive_jpeg = img.convert("RGB")
-        progressive_jpeg.save(output_image_path, "JPEG", quality=100, optimize=True, progressive=True)
+        progressive_jpeg.save(output_image_path, "JPEG", optimize=True, progressive=True)
 
 def convert_to_png(input_image_path, output_image_path):
     with Image.open(input_image_path) as img:
