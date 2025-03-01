@@ -16,7 +16,9 @@ def convert_images():
     image_folder = image_folder_path.get()
     output_folder = output_folder_path.get()
     delete_original = delete_checkbox_var.get()
-    batchConvert.batch_convert(image_folder, output_folder)
+    output_format = format_var.get()
+    wii_photo_channel_size_limit = resize_checkbox_var.get()
+    batchConvert.batch_convert(image_folder, output_folder, output_format, wii_photo_channel_size_limit)
 
     image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".heic", ".heif"}
 
@@ -30,7 +32,7 @@ def convert_images():
     messagebox.showinfo("Done", "Conversion is Completed!")
 
 root = tk.Tk()
-root.title("Wii Photo Channel Image Converter")
+root.title("Batch Image Converter")
 icon = PhotoImage(file='images/photo-channel-icon.png')
 root.iconphoto(True, icon)
 
@@ -52,11 +54,25 @@ output_folder_path.grid(row=1, column=1, padx=10, pady=10)
 output_folder_browse = tk.Button(root, text="Browse", command=lambda: browse_folder(output_folder_path))
 output_folder_browse.grid(row=1, column=2, padx=10, pady=10)
 
+format_label = tk.Label(root, text="Select Output Format")
+format_label.grid(row=2, column=0, padx=10, pady=10)
+
+format_var = tk.StringVar()
+format_var.set("JPEG Baseline")
+
+formats = ["JPEG Baseline", "JPEG Progressive", "PNG"]
+format_dropdown = tk.OptionMenu(root, format_var, *formats)
+format_dropdown.grid(row=2, column=1, padx=10, pady=10)
+
 delete_checkbox_var = tk.BooleanVar()
 delete_checkbox = tk.Checkbutton(root, text="Delete Original Files After Conversion", variable=delete_checkbox_var)
-delete_checkbox.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+delete_checkbox.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
+
+resize_checkbox_var = tk.BooleanVar(value=True)
+resize_checkbox = tk.Checkbutton(root, text="Convert Images Within Wii Photo Channel Size Limit (8192x8192)", variable=resize_checkbox_var)
+resize_checkbox.grid(row=4, column=0, columnspan=3, padx=10, pady=10)
 
 convert_button = tk.Button(root, text="Convert", command=convert_images)
-convert_button.grid(row=3, column=0, columnspan=3, pady=20)
+convert_button.grid(row=5, column=0, columnspan=3, pady=20)
 
 root.mainloop()
