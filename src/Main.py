@@ -117,8 +117,8 @@ convert_button.grid(row=5, column=0, columnspan=1, pady=20)
 save_default_button = tk.Button(root, text="Save Default Output Path", command=save_default_output_path)
 save_default_button.grid(row=5, column=1, columnspan=1, pady=20)
 
-save_default_button = tk.Button(root, text="Remove Default Output Path", command=remove_default_output_path)
-save_default_button.grid(row=5, column=2, columnspan=1, pady=20)
+remove_default_button = tk.Button(root, text="Remove Default Output Path", command=remove_default_output_path)
+remove_default_button.grid(row=5, column=2, columnspan=1, pady=20)
 
 load_default_output_path()
 
