@@ -18,10 +18,13 @@ def convert_images():
     delete_original = delete_checkbox_var.get()
     batchConvert.batch_convert(image_folder, output_folder)
 
+    image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".heic", ".heif"}
+
     if delete_original:
         for filename in os.listdir(image_folder):
             file_path = os.path.join(image_folder, filename)
-            if os.path.isfile(file_path):
+            file_extension = os.path.splitext(filename)[1].lower()
+            if os.path.isfile(file_path) and file_extension in image_extensions:
                 os.remove(file_path)
 
     messagebox.showinfo("Done", "Conversion is Completed!")

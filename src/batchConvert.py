@@ -5,8 +5,8 @@ import os
 
 def convert_to_baseline_jpeg(input_image_path, output_image_path):
     with Image.open(input_image_path) as img:
-        rgb_img = img.convert("RGB")
-        rgb_img.save(output_image_path, "JPEG", quality=100, optimize=True, baseline=True)
+        baseline_jpeg = img.convert("RGB")
+        baseline_jpeg.save(output_image_path, "JPEG", quality=100, optimize=True, baseline=True)
 
 def valid_image_size(image_path):
     with Image.open(image_path) as img:
@@ -54,3 +54,6 @@ def batch_convert(input_directory, output_directory):
             output_image_path = os.path.join(output_directory, f"{base_name}_{counter}.jpg")
 
         convert_to_baseline_jpeg(input_image_path, output_image_path)
+
+        if file_extension in ['.heic', '.heif']:
+            os.remove(input_image_path)
