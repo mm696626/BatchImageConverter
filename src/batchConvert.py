@@ -29,13 +29,17 @@ def batch_convert(input_directory, output_directory, output_format, wii_photo_ch
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
 
-    image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".heic", ".heif"}
+    image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".heic", ".heif", ".gif"}
 
     for filename in os.listdir(input_directory):
 
         register_heif_opener()
 
         input_image_path = os.path.join(input_directory, filename)
+
+        if os.path.isdir(input_image_path):
+            batch_convert(input_image_path, output_directory, output_format, wii_photo_channel_size_limit)
+            continue
 
         if not os.path.isfile(input_image_path):
             continue

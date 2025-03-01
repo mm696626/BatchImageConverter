@@ -13,7 +13,8 @@
   * WEBP
   * HEIC
   * HEIF
-* Choose the folder containing your images (subfolders aren't checked)
+  * GIF
+* Choose the folder containing your images
 * Choose the output format (Baseline/Progressive JPG, PNG)
 * Choose an output directory for the converted images
 * Hope this tool is useful for batch converting images!
