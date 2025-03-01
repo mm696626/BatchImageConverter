@@ -2,15 +2,49 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import PhotoImage
-
 import batchConvert
 import os
+
 
 def browse_folder(entry_widget):
     folder_selected = filedialog.askdirectory()
     if folder_selected:
         entry_widget.delete(0, tk.END)
         entry_widget.insert(0, folder_selected)
+
+
+def save_default_output_path():
+    folder_selected = filedialog.askdirectory(title="Select Default Output Path")
+    if folder_selected:
+        try:
+            with open("default_output_path.txt", "w") as file:
+                file.write(folder_selected)
+            output_folder_path.delete(0, tk.END)
+            output_folder_path.insert(0, folder_selected)
+            messagebox.showinfo("Saved", "Default output path has been saved.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save the default output path")
+    else:
+        messagebox.showwarning("Invalid Input", "Please select an output folder first.")
+
+
+def load_default_output_path():
+    if os.path.exists("default_output_path.txt"):
+        try:
+            with open("default_output_path.txt", "r") as file:
+                saved_path = file.read().strip()
+                output_folder_path.delete(0, tk.END)
+                output_folder_path.insert(0, saved_path)
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load the default output path: {str(e)}")
+
+def remove_default_output_path():
+    if os.path.exists("default_output_path.txt"):
+        os.remove("default_output_path.txt")
+        output_folder_path.delete(0, tk.END)
+        messagebox.showinfo("Removed", "Default output path has been removed.")
+    else:
+        messagebox.showerror("Error", "No default output path exists.")
 
 def convert_images():
     image_folder = image_folder_path.get()
@@ -37,7 +71,10 @@ def convert_images():
     messagebox.showinfo("Done", "Conversion is Completed!")
 
     image_folder_path.delete(0, tk.END)
-    output_folder_path.delete(0, tk.END)
+
+    if not os.path.exists("default_output_path.txt"):
+        output_folder_path.delete(0, tk.END)
+
 
 root = tk.Tk()
 root.title("Batch Image Converter")
@@ -81,6 +118,14 @@ resize_checkbox = tk.Checkbutton(root, text="Convert Images Within the Wii Photo
 resize_checkbox.grid(row=4, column=0, columnspan=3, padx=10, pady=10)
 
 convert_button = tk.Button(root, text="Convert", command=convert_images)
-convert_button.grid(row=5, column=0, columnspan=3, pady=20)
+convert_button.grid(row=5, column=0, columnspan=1, pady=20)
+
+save_default_button = tk.Button(root, text="Save Default Output Path", command=save_default_output_path)
+save_default_button.grid(row=5, column=1, columnspan=1, pady=20)
+
+save_default_button = tk.Button(root, text="Remove Default Output Path", command=remove_default_output_path)
+save_default_button.grid(row=5, column=2, columnspan=1, pady=20)
+
+load_default_output_path()
 
 root.mainloop()
