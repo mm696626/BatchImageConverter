@@ -10,6 +10,8 @@
   * JPEG
   * BMP
   * WEBP
+  * HEIC
+  * HEIF
 * Choose the folder containing your images (subfolders aren't checked)
 * Choose an output directory for the converted images
 * Have fun using your images in the Photo Channel!

@@ -1,4 +1,5 @@
 from PIL import Image
+from pillow_heif import register_heif_opener
 import os
 
 
@@ -19,9 +20,12 @@ def batch_convert(input_directory, output_directory):
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
 
-    image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
+    image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".heic", ".heif"}
 
     for filename in os.listdir(input_directory):
+
+        register_heif_opener()
+
         input_image_path = os.path.join(input_directory, filename)
 
         if not os.path.isfile(input_image_path):
@@ -34,6 +38,11 @@ def batch_convert(input_directory, output_directory):
 
         if not valid_image_size(input_image_path):
             continue
+
+        if file_extension in ['.heic', '.heif']:
+            heic_image = Image.open(input_image_path)
+            input_image_path = os.path.splitext(input_image_path)[0] + ".jpeg"
+            heic_image.save(input_image_path, format="jpeg")
 
         output_image_path = os.path.join(output_directory, os.path.splitext(filename)[0] + ".jpg")
 
