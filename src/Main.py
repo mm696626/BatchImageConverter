@@ -18,6 +18,11 @@ def convert_images():
     delete_original = delete_checkbox_var.get()
     output_format = format_var.get()
     wii_photo_channel_size_limit = resize_checkbox_var.get()
+
+    if not image_folder or not output_folder:
+        messagebox.showerror("Invalid Input", "An image folder and output folder must be given!")
+        return
+
     batchConvert.batch_convert(image_folder, output_folder, output_format, wii_photo_channel_size_limit)
 
     image_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".heic", ".heif"}
@@ -30,6 +35,9 @@ def convert_images():
                 os.remove(file_path)
 
     messagebox.showinfo("Done", "Conversion is Completed!")
+
+    image_folder_path.delete(0, tk.END)
+    output_folder_path.delete(0, tk.END)
 
 root = tk.Tk()
 root.title("Batch Image Converter")
@@ -45,7 +53,7 @@ image_folder_path.grid(row=0, column=1, padx=10, pady=10)
 image_folder_browse = tk.Button(root, text="Browse", command=lambda: browse_folder(image_folder_path))
 image_folder_browse.grid(row=0, column=2, padx=10, pady=10)
 
-output_folder_label = tk.Label(root, text="Output Folder")
+output_folder_label = tk.Label(root, text="Output Image Folder")
 output_folder_label.grid(row=1, column=0, padx=10, pady=10)
 
 output_folder_path = tk.Entry(root, width=40)
@@ -65,11 +73,11 @@ format_dropdown = tk.OptionMenu(root, format_var, *formats)
 format_dropdown.grid(row=2, column=1, padx=10, pady=10)
 
 delete_checkbox_var = tk.BooleanVar()
-delete_checkbox = tk.Checkbutton(root, text="Delete Original Files After Conversion", variable=delete_checkbox_var)
+delete_checkbox = tk.Checkbutton(root, text="Delete Original Images After Conversion", variable=delete_checkbox_var)
 delete_checkbox.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
 
 resize_checkbox_var = tk.BooleanVar(value=True)
-resize_checkbox = tk.Checkbutton(root, text="Convert Images Within Wii Photo Channel Size Limit (8192x8192)", variable=resize_checkbox_var)
+resize_checkbox = tk.Checkbutton(root, text="Convert Images Within the Wii Photo Channel's Size Limit (8192x8192)", variable=resize_checkbox_var)
 resize_checkbox.grid(row=4, column=0, columnspan=3, padx=10, pady=10)
 
 convert_button = tk.Button(root, text="Convert", command=convert_images)

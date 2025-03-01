@@ -74,5 +74,6 @@ def batch_convert(input_directory, output_directory, output_format, wii_photo_ch
         else:
             convert_to_png(input_image_path, output_image_path)
 
+        # delete the temp png or jpeg from input folder
         if file_extension in ['.heic', '.heif']:
             os.remove(input_image_path)
