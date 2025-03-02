@@ -9,15 +9,19 @@ import os
 def browse_folder(entry_widget):
     folder_selected = filedialog.askdirectory()
     if folder_selected:
+        entry_widget.config(state=tk.NORMAL)
         entry_widget.delete(0, tk.END)
         entry_widget.insert(0, folder_selected)
+        entry_widget.config(state=tk.DISABLED)
 
 
 def browse_files(entry_widget):
     files_selected = filedialog.askopenfilenames(filetypes=[("Image Files", "*.jpg *.jpeg *.png *.bmp *.webp *.heic *.heif *.gif")])
     if files_selected:
+        entry_widget.config(state=tk.NORMAL)
         entry_widget.delete(0, tk.END)
         entry_widget.insert(0, ', '.join(files_selected))
+        entry_widget.config(state=tk.DISABLED)
 
 
 def save_default_output_path():
@@ -25,8 +29,10 @@ def save_default_output_path():
     if folder_selected:
         with open("default_output_path.txt", "w") as file:
             file.write(folder_selected)
+            output_folder_path.config(state=tk.NORMAL)
             output_folder_path.delete(0, tk.END)
             output_folder_path.insert(0, folder_selected)
+            output_folder_path.config(state=tk.DISABLED)
             messagebox.showinfo("Saved", "Default output path has been saved.")
     else:
         messagebox.showwarning("Invalid Input", "Please select an output folder first.")
@@ -36,18 +42,34 @@ def load_default_output_path():
     if os.path.exists("default_output_path.txt"):
         with open("default_output_path.txt", "r") as file:
             saved_path = file.read().strip()
+            output_folder_path.config(state=tk.NORMAL)
             output_folder_path.delete(0, tk.END)
             output_folder_path.insert(0, saved_path)
+            output_folder_path.config(state=tk.DISABLED)
 
 
 def remove_default_output_path():
     if os.path.exists("default_output_path.txt"):
         os.remove("default_output_path.txt")
+        output_folder_path.config(state=tk.NORMAL)
         output_folder_path.delete(0, tk.END)
+        output_folder_path.config(state=tk.DISABLED)
         messagebox.showinfo("Removed", "Default output path has been removed.")
     else:
         messagebox.showerror("Error", "No default output path exists.")
 
+def clear_output_folder_path(output_folder):
+    output_folder_path.config(state=tk.NORMAL)
+    if os.path.exists("default_output_path.txt"):
+        with open("default_output_path.txt", "r") as file:
+            default_output_path = file.read().strip()
+
+        if os.path.abspath(output_folder) != os.path.abspath(default_output_path):
+            output_folder_path.delete(0, tk.END)
+
+    else:
+        output_folder_path.delete(0, tk.END)
+    output_folder_path.config(state=tk.DISABLED)
 
 def convert_image_folder():
     image_folder = image_folder_path.get()
@@ -73,10 +95,10 @@ def convert_image_folder():
 
     messagebox.showinfo("Done", "Conversion Complete!")
 
+    image_folder_path.config(state=tk.NORMAL)
     image_folder_path.delete(0, tk.END)
-
-    if not os.path.exists("default_output_path.txt"):
-        output_folder_path.delete(0, tk.END)
+    image_folder_path.config(state=tk.DISABLED)
+    clear_output_folder_path(output_folder)
 
 def convert_image_files():
     image_files = image_file_path.get()
@@ -99,10 +121,10 @@ def convert_image_files():
 
     messagebox.showinfo("Done", "Conversion Complete!")
 
+    image_file_path.config(state=tk.NORMAL)
     image_file_path.delete(0, tk.END)
-
-    if not os.path.exists("default_output_path.txt"):
-        output_folder_path.delete(0, tk.END)
+    clear_output_folder_path(output_folder)
+    image_file_path.config(state=tk.DISABLED)
 
 
 root = tk.Tk()
@@ -115,6 +137,7 @@ image_folder_label.grid(row=0, column=0, padx=10, pady=10)
 
 image_folder_path = tk.Entry(root, width=40)
 image_folder_path.grid(row=0, column=1, padx=10, pady=10)
+image_folder_path.config(state=tk.DISABLED)
 
 image_folder_browse = tk.Button(root, text="Browse Folder", command=lambda: browse_folder(image_folder_path))
 image_folder_browse.grid(row=0, column=2, padx=10, pady=10)
@@ -124,6 +147,7 @@ image_file_label.grid(row=1, column=0, padx=10, pady=10)
 
 image_file_path = tk.Entry(root, width=40)
 image_file_path.grid(row=1, column=1, padx=10, pady=10)
+image_file_path.config(state=tk.DISABLED)
 
 image_file_browse = tk.Button(root, text="Browse Files", command=lambda: browse_files(image_file_path))
 image_file_browse.grid(row=1, column=2, padx=10, pady=10)
@@ -133,6 +157,7 @@ output_folder_label.grid(row=2, column=0, padx=10, pady=10)
 
 output_folder_path = tk.Entry(root, width=40)
 output_folder_path.grid(row=2, column=1, padx=10, pady=10)
+output_folder_path.config(state=tk.DISABLED)
 
 output_folder_browse = tk.Button(root, text="Browse", command=lambda: browse_folder(output_folder_path))
 output_folder_browse.grid(row=2, column=2, padx=10, pady=10)
@@ -162,10 +187,13 @@ convert_button = tk.Button(root, text="Convert Files", command=convert_image_fil
 convert_button.grid(row=6, column=1, columnspan=1, pady=20)
 
 save_default_button = tk.Button(root, text="Save Default Output Folder Path", command=save_default_output_path)
-save_default_button.grid(row=6, column=2, columnspan=1, pady=20)
+save_default_button.grid(row=7, column=0, columnspan=1, pady=20)
 
 remove_default_button = tk.Button(root, text="Remove Default Output Folder Path", command=remove_default_output_path)
-remove_default_button.grid(row=6, column=3, columnspan=1, pady=20)
+remove_default_button.grid(row=7, column=1, columnspan=1, pady=20)
+
+reload_default_button = tk.Button(root, text="Reload Default Output Folder Path", command=load_default_output_path)
+reload_default_button.grid(row=7, column=2, columnspan=1, pady=20)
 
 load_default_output_path()
 
