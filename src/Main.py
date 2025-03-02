@@ -132,7 +132,7 @@ root.title("Batch Image Converter")
 icon = PhotoImage(file='images/photo-channel-icon.png')
 root.iconphoto(True, icon)
 
-image_folder_label = tk.Label(root, text="Image Folder")
+image_folder_label = tk.Label(root, text="Input Image Folder")
 image_folder_label.grid(row=0, column=0, padx=10, pady=10)
 
 image_folder_path = tk.Entry(root, width=40)
@@ -142,7 +142,7 @@ image_folder_path.config(state=tk.DISABLED)
 image_folder_browse = tk.Button(root, text="Browse Folder", command=lambda: browse_folder(image_folder_path))
 image_folder_browse.grid(row=0, column=2, padx=10, pady=10)
 
-image_file_label = tk.Label(root, text="Select Image Files (Optional)")
+image_file_label = tk.Label(root, text="Input Image Files")
 image_file_label.grid(row=1, column=0, padx=10, pady=10)
 
 image_file_path = tk.Entry(root, width=40)
