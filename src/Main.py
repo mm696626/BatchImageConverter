@@ -180,11 +180,11 @@ resize_checkbox_var = tk.BooleanVar(value=True)
 resize_checkbox = tk.Checkbutton(root, text="Convert Images Within the Wii Photo Channel's Size Limit (8192x8192)", variable=resize_checkbox_var)
 resize_checkbox.grid(row=5, column=0, columnspan=3, padx=10, pady=10)
 
-convert_button = tk.Button(root, text="Convert Folder", command=convert_image_folder)
-convert_button.grid(row=6, column=0, columnspan=1, pady=20)
+convert_folder_button = tk.Button(root, text="Convert Folder", command=convert_image_folder)
+convert_folder_button.grid(row=6, column=0, columnspan=1, pady=20)
 
-convert_button = tk.Button(root, text="Convert Files", command=convert_image_files)
-convert_button.grid(row=6, column=1, columnspan=1, pady=20)
+convert_files_button = tk.Button(root, text="Convert Files", command=convert_image_files)
+convert_files_button.grid(row=6, column=1, columnspan=1, pady=20)
 
 save_default_button = tk.Button(root, text="Save Default Output Folder Path", command=save_default_output_path)
 save_default_button.grid(row=7, column=0, columnspan=1, pady=20)
