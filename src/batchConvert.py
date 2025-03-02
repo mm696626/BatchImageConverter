@@ -22,7 +22,7 @@ def valid_image_size(image_path):
         width, height = img.size
         return width <= 8192 and height <= 8192
 
-def batch_convert(input_directory, output_directory, output_format, wii_photo_channel_size_limit):
+def convert_folder(input_directory, output_directory, output_format, wii_photo_channel_size_limit):
     if not os.path.exists(input_directory):
         os.makedirs(input_directory)
 
@@ -38,7 +38,7 @@ def batch_convert(input_directory, output_directory, output_format, wii_photo_ch
         input_image_path = os.path.join(input_directory, filename)
 
         if os.path.isdir(input_image_path):
-            batch_convert(input_image_path, output_directory, output_format, wii_photo_channel_size_limit)
+            convert_folder(input_image_path, output_directory, output_format, wii_photo_channel_size_limit)
             continue
 
         if not os.path.isfile(input_image_path):
@@ -57,11 +57,6 @@ def batch_convert(input_directory, output_directory, output_format, wii_photo_ch
         else:
             output_file_extension = ".jpeg"
 
-        if file_extension in ['.heic', '.heif']:
-            heic_image = Image.open(input_image_path)
-            input_image_path = os.path.splitext(input_image_path)[0] + output_file_extension
-            heic_image.save(input_image_path, format=output_file_extension[1:])
-
         output_image_path = os.path.join(output_directory, os.path.splitext(filename)[0] + output_file_extension)
 
         if os.path.exists(output_image_path):
@@ -78,6 +73,40 @@ def batch_convert(input_directory, output_directory, output_format, wii_photo_ch
         else:
             convert_to_png(input_image_path, output_image_path)
 
-        # delete the temp png or jpeg from input folder
-        if file_extension in ['.heic', '.heif']:
-            os.remove(input_image_path)
+
+def convert_images(image_files, output_directory, output_format, wii_photo_channel_size_limit):
+
+    if not os.path.exists(output_directory):
+        os.makedirs(output_directory)
+
+    for file in image_files:
+
+        if not os.path.exists(file):
+            continue
+
+        register_heif_opener()
+
+        if wii_photo_channel_size_limit and not valid_image_size(file):
+            continue
+
+        if output_format == "PNG":
+            output_file_extension = ".png"
+        else:
+            output_file_extension = ".jpeg"
+
+        output_image_path = os.path.join(output_directory, os.path.splitext(os.path.basename(file))[0] + output_file_extension)
+
+        if os.path.exists(output_image_path):
+            base_name = os.path.splitext(os.path.basename(file))[0]
+            counter = 1
+            while os.path.exists(os.path.join(output_directory, f"{base_name}_{counter}{output_file_extension}")):
+                counter += 1
+            output_image_path = os.path.join(output_directory, f"{base_name}_{counter}{output_file_extension}")
+
+        if output_format == "JPEG Baseline":
+            convert_to_baseline_jpeg(file, output_image_path)
+        elif output_format == "JPEG Progressive":
+            convert_to_progressive_jpeg(file, output_image_path)
+        else:
+            convert_to_png(file, output_image_path)
+
